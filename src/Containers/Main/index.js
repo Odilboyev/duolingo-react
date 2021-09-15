@@ -1,48 +1,56 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import MainWr from "./MainWrapper";
+import { State } from "./state";
+import { FiCheckCircle } from "react-icons/fi";
 const Main = () => {
-  const [setBtn, setSetBtn] = useState([
-    { text: "Moskvaga" },
-    { text: "Men" },
-    { text: "o'qiyman" },
-    { text: "boraman" },
-    { text: "Moskvada" },
-  ]);
-  const [getBtn, setGetBtn] = useState([]);
-  const [word, setWord] = useState("Men Moskvada o'qiyman");
-  const [boolean, setBoolean] = useState("");
+  const [level, setLevel] = useState(0);
+  const [data, setData] = useState(State.variants[level]);
+  const [trueAnswer, setTrueAnswer] = useState(State.trueAnswers[level]);
+  const [question, setQuestion] = useState(State.questions[level]);
+  const [answer, setAnswer] = useState([]);
+  const [boolean, setBoolean] = useState(false);
+  const [display, SetDisplay] = useState("invisible");
 
   const moveBtn = (index) => {
-    let btns = [...setBtn];
-    let getBtns = [...getBtn, setBtn[index]];
+    let questions = [...data];
+    let answers = [...answer, questions[index]];
+    setAnswer(answers);
 
-    setGetBtn(getBtns);
-
-    btns.splice(index, 1);
-    setSetBtn(btns);
+    questions.splice(index, 1);
+    setData(questions);
   };
-
-  console.log(getBtn);
 
   const moveBtn2 = (index) => {
-    let buttons = [...getBtn];
-    let setBtns = [...setBtn, getBtn[index]];
+    let javoblar = [...answer];
+    let savollar = [...data, javoblar[index]];
+    setData(savollar);
 
-    setSetBtn(setBtns);
-
-    buttons.splice(index, 1);
-    setGetBtn(buttons);
+    javoblar.splice(index, 1);
+    setAnswer(javoblar);
   };
-
+  let checkIt = "";
   // check
   const check = () => {
-    let fultext = getBtn.map((item) => item.text).join(" ");
-    console.log(fultext);
-    console.log(word);
-    fultext === word ? setBoolean("true") : setBoolean("false");
+    let fulltext = answer.map((item) => item.text).join(" ");
+    SetDisplay("visible");
+    if (fulltext === trueAnswer) {
+      setLevel(level + 1);
+      setData(State.variants[level + 1]);
+      console.log(data);
+      setQuestion(State.questions[level + 1]);
+      setAnswer([]);
+      setTrueAnswer(State.trueAnswers[level + 1]);
+      setBoolean(!boolean);
+    } else {
+      setBoolean(false);
+    }
   };
   // check
+
+  // switch to next question
+  const toNext = () => {};
+
   return (
     <MainWr className="container">
       <h2 className="text-center my-3">Berilgan matnni tarjima qiling !</h2>
@@ -56,7 +64,7 @@ const Main = () => {
           <div className="default-text">
             <div className="d-flex">
               <div className="icon"></div>
-              <h2>I study in Moskow</h2>
+              <h2>{question}</h2>
             </div>
           </div>
         </div>
@@ -64,7 +72,7 @@ const Main = () => {
       {/* translate */}
       <div className="buttons pt-5 mt-5">
         <h4>Translate</h4>
-        {getBtn?.map((v, i) => (
+        {answer?.map((v, i) => (
           <Button
             key={i}
             variant="contained"
@@ -80,7 +88,7 @@ const Main = () => {
 
       <div className="buttons mt-5">
         <h4>Variants</h4>
-        {setBtn?.map((v, i) => (
+        {data?.map((v, i) => (
           <Button
             key={i}
             variant="contained"
@@ -94,12 +102,8 @@ const Main = () => {
       </div>
 
       <div className="check d-flex justify-content-between p-2">
-        <div className="icon">
-          {boolean === "true" ? (
-            <h3 className="text-success">True</h3>
-          ) : (
-            <h3 className="text-danger">False</h3>
-          )}
+        <div className={`icon ${display}`}>
+          {boolean ? "True answer" : "Wrong answer"}
         </div>
         <Button variant="contained" onClick={() => check()} color="secondary">
           Check

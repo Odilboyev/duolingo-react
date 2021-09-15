@@ -6,10 +6,10 @@ const MainWr = styled.div`
     align-items: center;
   }
   .animate {
-    margin: 20px auto !important;
+    margin: auto !important;
   }
   .buttons {
-    min-height: 10vh;
+    min-height: 5vh;
   }
 `;
 export default MainWr;
