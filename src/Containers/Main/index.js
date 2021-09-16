@@ -66,6 +66,18 @@ const Main = () => {
     }
   };
 
+  // restart
+  const reStart = () => {
+    setLevel(0);
+    setData(State.variants[level]);
+    setQuestion(State.questions[level]);
+    setAnswer([]);
+    setTrueAnswer(State.trueAnswers[level]);
+    SetDisplay("invisible");
+    setBoolean(false);
+    setOpen(false);
+  };
+
   return (
     <MainWr className="container">
       <h2 className="text-center my-3">Berilgan matnni tarjima qiling !</h2>
@@ -100,8 +112,9 @@ const Main = () => {
         ))}
       </div>
       {/* /translate */}
+      <hr />
 
-      <div className="buttons mt-5">
+      <div className="buttons mt-2">
         <h4>Variants</h4>
         {data?.map((v, i) => (
           <Button
@@ -115,7 +128,7 @@ const Main = () => {
           </Button>
         ))}
       </div>
-
+      <hr />
       <div className="check d-flex justify-content-between p-2">
         <div className={`icon ${display}`}>
           {boolean ? (
@@ -134,7 +147,16 @@ const Main = () => {
           </Button>
         )}
         <Snackbar open={open}>
-          <Alert severity="info">Savollar tugadi !</Alert>
+          <Alert severity="info">
+            Savollar tugadi !<br />
+            <Button
+              variant="contained"
+              color="default"
+              onClick={() => reStart()}
+            >
+              Qayta boshlash
+            </Button>
+          </Alert>
         </Snackbar>
       </div>
     </MainWr>

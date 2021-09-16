@@ -8,11 +8,5 @@ const MainWr = styled.div`
   .animate {
     margin: auto !important;
   }
-  .buttons {
-    min-height: 5vh;
-    button {
-      transition: all 1s !important;
-    }
-  }
 `;
 export default MainWr;
