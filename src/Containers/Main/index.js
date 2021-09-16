@@ -35,12 +35,6 @@ const Main = () => {
     let fulltext = answer.map((item) => item.text).join(" ");
     SetDisplay("visible");
     if (fulltext === trueAnswer) {
-      setLevel(level + 1);
-      setData(State.variants[level + 1]);
-      console.log(data);
-      setQuestion(State.questions[level + 1]);
-      setAnswer([]);
-      setTrueAnswer(State.trueAnswers[level + 1]);
       setBoolean(!boolean);
     } else {
       setBoolean(false);
@@ -49,7 +43,15 @@ const Main = () => {
   // check
 
   // switch to next question
-  const toNext = () => {};
+  const next = () => {
+    setLevel(level + 1);
+    setData(State.variants[level + 1]);
+    console.log(data);
+    setQuestion(State.questions[level + 1]);
+    setAnswer([]);
+    setTrueAnswer(State.trueAnswers[level + 1]);
+    SetDisplay("invisible");
+  };
 
   return (
     <MainWr className="container">
@@ -105,9 +107,15 @@ const Main = () => {
         <div className={`icon ${display}`}>
           {boolean ? "True answer" : "Wrong answer"}
         </div>
-        <Button variant="contained" onClick={() => check()} color="secondary">
-          Check
-        </Button>
+        {boolean ? (
+          <Button variant="contained" onClick={() => next()} color="primary">
+            Next question
+          </Button>
+        ) : (
+          <Button variant="contained" onClick={() => check()} color="secondary">
+            Check
+          </Button>
+        )}
       </div>
     </MainWr>
   );
