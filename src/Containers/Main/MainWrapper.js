@@ -10,6 +10,9 @@ const MainWr = styled.div`
   }
   .buttons {
     min-height: 5vh;
+    button {
+      transition: all 1s !important;
+    }
   }
 `;
 export default MainWr;

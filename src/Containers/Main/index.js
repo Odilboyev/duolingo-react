@@ -3,6 +3,8 @@ import Button from "@material-ui/core/Button";
 import MainWr from "./MainWrapper";
 import { State } from "./state";
 import { FiCheckCircle } from "react-icons/fi";
+import { Collapse, IconButton, Snackbar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 const Main = () => {
   const [level, setLevel] = useState(0);
   const [data, setData] = useState(State.variants[level]);
@@ -11,7 +13,8 @@ const Main = () => {
   const [answer, setAnswer] = useState([]);
   const [boolean, setBoolean] = useState(false);
   const [display, SetDisplay] = useState("invisible");
-
+  // snackbar
+  const [open, setOpen] = useState(false);
   const moveBtn = (index) => {
     let questions = [...data];
     let answers = [...answer, questions[index]];
@@ -44,13 +47,23 @@ const Main = () => {
 
   // switch to next question
   const next = () => {
-    setLevel(level + 1);
-    setData(State.variants[level + 1]);
-    console.log(data);
-    setQuestion(State.questions[level + 1]);
-    setAnswer([]);
-    setTrueAnswer(State.trueAnswers[level + 1]);
-    SetDisplay("invisible");
+    if (level < 2) {
+      setLevel(level + 1);
+      setData(State.variants[level + 1]);
+      setQuestion(State.questions[level + 1]);
+      setAnswer([]);
+      setTrueAnswer(State.trueAnswers[level + 1]);
+      SetDisplay("invisible");
+      setBoolean(false);
+    } else {
+      setOpen(true);
+      if (open) {
+        setTimeout(() => {
+          setOpen(false);
+        }, 2000);
+      }
+      return;
+    }
   };
 
   return (
@@ -105,7 +118,11 @@ const Main = () => {
 
       <div className="check d-flex justify-content-between p-2">
         <div className={`icon ${display}`}>
-          {boolean ? "True answer" : "Wrong answer"}
+          {boolean ? (
+            <Alert severity="success"> True Answer </Alert>
+          ) : (
+            <Alert severity="error"> Wrong Answer </Alert>
+          )}
         </div>
         {boolean ? (
           <Button variant="contained" onClick={() => next()} color="primary">
@@ -116,6 +133,9 @@ const Main = () => {
             Check
           </Button>
         )}
+        <Snackbar open={open}>
+          <Alert severity="info">Savollar tugadi !</Alert>
+        </Snackbar>
       </div>
     </MainWr>
   );
